@@ -1,6 +1,6 @@
 {
   "name": "gendiff-skhrv1",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "  Compares two configuration files and shows a difference.",
   "main": "index.js",
   "bin": {
