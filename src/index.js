@@ -2,18 +2,19 @@ import __ from 'lodash';
 import getFileFromPath from './parse';
 
 const buildAST = (data1, data2) => {
-  const keys1 = Object.keys(data1);
-  const keys2 = Object.keys(data2);
-  const astData1 = keys1.reduce((acc, key) => {
-    if (__.has(data2, key) && data1[key] === data2[key]) {
+  const keys = __.union(Object.keys(data1), Object.keys(data2));
+  const result = keys.reduce((acc, key) => {
+    if (__.has(data1, key) && __.has(data2, key) && data1[key] === data2[key]) {
       return [...acc, [[key, data1[key]], ' ']];
     }
-    if (__.has(data2, key)) {
+    if (__.has(data1, key) && __.has(data2, key)) {
       return [...acc, [[key, data2[key]], '+'], [[key, data1[key]], '-']];
+    }
+    if (__.has(data2, key)) {
+      return [...acc, [[key, data2[key]], '+']];
     }
     return [...acc, [[key, data1[key]], '-']];
   }, []);
-  const result = keys2.reduce((acc, key) => (__.has(data1, key) ? acc : [...acc, [[key, data2[key]], '+']]), astData1);
   return result;
 };
 
