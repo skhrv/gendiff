@@ -4,7 +4,7 @@ import getFileFromPath from './parse';
 const buildAST = (data1, data2) => {
   const keys = __.union(Object.keys(data1), Object.keys(data2));
   const result = keys.reduce((acc, key) => {
-    if (__.has(data1, key) && __.has(data2, key) && data1[key] === data2[key]) {
+    if (data1[key] === data2[key]) {
       return [...acc, [[key, data1[key]], ' ']];
     }
     if (__.has(data1, key) && __.has(data2, key)) {
