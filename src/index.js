@@ -1,9 +1,7 @@
 import __ from 'lodash';
-import fs from 'fs';
+import getFileFromPath from './parse';
 
-const getFileFromPath = pathToFile => JSON.parse(fs.readFileSync(pathToFile));
-
-const parsing = (data1, data2) => {
+const buildAST = (data1, data2) => {
   const keys1 = Object.keys(data1);
   const keys2 = Object.keys(data2);
   const astData1 = keys1.reduce((acc, key) => {
@@ -18,7 +16,8 @@ const parsing = (data1, data2) => {
   const result = keys2.reduce((acc, key) => (__.has(data1, key) ? acc : [...acc, [[key, data2[key]], '+']]), astData1);
   return result;
 };
-const build = (ast) => {
+
+const genDiff = (ast) => {
   const str = ast.reduce((acc, item) => {
     const [obj, diff] = item;
     const [key, value] = obj;
@@ -30,6 +29,6 @@ const build = (ast) => {
 export default (pathToBefore, pathToAfter) => {
   const before = getFileFromPath(pathToBefore);
   const after = getFileFromPath(pathToAfter);
-  const diff = parsing(before, after);
-  return build(diff);
+  const ast = buildAST(before, after);
+  return genDiff(ast);
 };
