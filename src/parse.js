@@ -1,24 +1,15 @@
 import yaml from 'js-yaml';
 import ini from 'ini';
 
+const dataFormats = {
+  '.yaml': data => yaml.safeLoad(data),
+  '.json': data => JSON.parse(data),
+  '.ini': data => ini.parse(data),
+};
 
-const fileExtensions = [
-  {
-    ext: '.yaml',
-    parse: file => yaml.safeLoad(file),
-  },
-  {
-    ext: '.json',
-    parse: file => JSON.parse(file),
-  },
-  {
-    ext: '.ini',
-    parse: file => ini.parse(file),
-  },
-];
-const getParsing = extention => fileExtensions.find(({ ext }) => ext === extention);
+const getParsing = ext => dataFormats[ext];
 
 export default (ext, data) => {
-  const { parse } = getParsing(ext);
+  const parse = getParsing(ext);
   return parse(data);
 };
