@@ -1,9 +1,8 @@
-import fs from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';
 
 
-const fileExtension = [
+const fileExtensions = [
   {
     ext: '.yaml',
     parse: file => yaml.safeLoad(file),
@@ -13,10 +12,10 @@ const fileExtension = [
     parse: file => JSON.parse(file),
   },
 ];
-const getParsing = extention => fileExtension.find(({ ext }) => ext === extention);
+const getParsing = extention => fileExtensions.find(({ ext }) => ext === extention);
 
 export default (pathToFile) => {
   const ext = path.extname(pathToFile);
   const { parse } = getParsing(ext);
-  return parse(fs.readFileSync(pathToFile));
+  return parse;
 };
