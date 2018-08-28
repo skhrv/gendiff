@@ -1,8 +1,10 @@
 import _ from 'lodash';
 import fs from 'fs';
-import getParse from './parse';
+import path from 'path';
+import parse from './parse';
 
-const getData = (pathfile, parseFunc) => parseFunc(fs.readFileSync(pathfile));
+
+const getData = pathfile => fs.readFileSync(pathfile);
 
 const buildAST = (data1, data2) => {
   const keys = _.union(Object.keys(data1), Object.keys(data2));
@@ -30,9 +32,9 @@ const genDiff = (ast) => {
 };
 
 export default (pathToBefore, pathToAfter) => {
-  const parse = getParse(pathToBefore);
-  const before = getData(pathToBefore, parse);
-  const after = getData(pathToAfter, parse);
+  const ext = path.extname(pathToBefore);
+  const before = parse(ext, getData(pathToBefore));
+  const after = parse(ext, getData(pathToAfter));
   const ast = buildAST(before, after);
   return genDiff(ast);
 };

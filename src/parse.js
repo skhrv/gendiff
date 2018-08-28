@@ -1,5 +1,5 @@
-import path from 'path';
 import yaml from 'js-yaml';
+import ini from 'ini';
 
 
 const fileExtensions = [
@@ -11,11 +11,14 @@ const fileExtensions = [
     ext: '.json',
     parse: file => JSON.parse(file),
   },
+  {
+    ext: '.ini',
+    parse: file => ini.parse(file),
+  },
 ];
 const getParsing = extention => fileExtensions.find(({ ext }) => ext === extention);
 
-export default (pathToFile) => {
-  const ext = path.extname(pathToFile);
+export default (ext, data) => {
   const { parse } = getParsing(ext);
-  return parse;
+  return parse(data);
 };
