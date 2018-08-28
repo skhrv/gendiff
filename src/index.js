@@ -32,9 +32,10 @@ const genDiff = (ast) => {
 };
 
 export default (pathToBefore, pathToAfter) => {
-  const ext = path.extname(pathToBefore);
-  const before = parse(ext, getData(pathToBefore));
-  const after = parse(ext, getData(pathToAfter));
+  const extBefore = path.extname(pathToBefore);
+  const extAfter = path.extname(pathToAfter);
+  const before = parse(extBefore, getData(pathToBefore));
+  const after = parse(extAfter, getData(pathToAfter));
   const ast = buildAST(before, after);
   return genDiff(ast);
 };
