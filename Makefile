@@ -15,4 +15,4 @@ lint:
 	npx eslint .
 
 test:
-	npm test
+	npm test -- --watch
