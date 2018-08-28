@@ -1,0 +1,10 @@
+{
+    + scope: global
+    - scope: local
+    + user: root
+    - user: dbuser
+      password: dbpassword
+      database: use_another_database
+      tmpdir: /tmp
+    + datadir: /users/data
+  }

@@ -4,7 +4,7 @@ import path from 'path';
 import parse from './parse';
 
 
-const getData = pathfile => fs.readFileSync(pathfile);
+const getData = pathfile => fs.readFileSync(pathfile, 'utf-8');
 
 const buildAST = (data1, data2) => {
   const keys = _.union(Object.keys(data1), Object.keys(data2));

@@ -1,6 +1,6 @@
 {
   "name": "gendiff-skhrv1",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "  Compares two configuration files and shows a difference.",
   "main": "index.js",
   "bin": {
@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "commander": "^2.17.1",
+    "ini": "^1.3.5",
     "js-yaml": "^3.12.0",
     "lodash": "^4.17.10"
   }
