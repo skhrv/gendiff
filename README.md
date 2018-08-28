@@ -6,4 +6,8 @@
 
 Второй шаг https://asciinema.org/a/tpQhtovZPR3CxIIAlqIt4Pc3M
 
+
 Третий шаг https://asciinema.org/a/qCy9Rt5UidnVswQjuVG6s2Tni
+
+
+Четвертый шаг https://asciinema.org/a/5WE98vSNdICQVZTOIczZ0LAdK
