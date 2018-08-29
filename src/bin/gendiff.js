@@ -8,8 +8,8 @@ commander
   .description(description)
   .option('-f, --format [type]', 'Output format', 'default')
   .arguments('<firstConfig> <secondConfig>')
-  .action((firstConfig, secondConfig, format) => {
+  .action((firstConfig, secondConfig) => {
     // eslint-disable-next-line no-console
-    console.log(gendiff(firstConfig, secondConfig, format));
+    console.log(gendiff(firstConfig, secondConfig, commander.format));
   })
   .parse(process.argv);
