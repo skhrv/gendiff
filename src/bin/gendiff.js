@@ -6,10 +6,10 @@ import { version, description } from '../../package.json';
 commander
   .version(version)
   .description(description)
-  .option('-f, --format [type]', 'Output format')
+  .option('-f, --format [type]', 'Output format', 'default')
   .arguments('<firstConfig> <secondConfig>')
-  .action((firstConfig, secondConfig) => {
+  .action((firstConfig, secondConfig, format) => {
     // eslint-disable-next-line no-console
-    console.log(gendiff(firstConfig, secondConfig));
+    console.log(gendiff(firstConfig, secondConfig, format));
   })
   .parse(process.argv);

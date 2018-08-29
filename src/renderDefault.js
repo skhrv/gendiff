@@ -1,0 +1,63 @@
+import _ from 'lodash';
+
+const indentation = '    ';
+const tab = tabsize => _.repeat(indentation, tabsize);
+const tabForClosingBracket = '  ';
+
+const stringify = (obj, tabsize) => {
+  const keys = Object.keys(obj);
+  const str = keys.reduce((acc, key) => {
+    const value = obj[key] instanceof Object ? stringify(obj[key], tabsize + 1) : obj[key];
+    return `${acc}\n${tab(tabsize)}  ${key}: ${value}`;
+  }, '');
+  return `{${str}\n${tab(tabsize - 1)}${tabForClosingBracket}}`;
+};
+
+const nodeTypesForRender = {
+  nest: {
+    symbol: ' ',
+    getValue: ({ children }, tabsize, func) => func(children, tabsize),
+    toString: (key, value, tabsize) => `\n${tab(tabsize)}  ${key}: ${value}`,
+  },
+  changed: {
+    symbol: '+',
+    getValue: ({ value }, tabsize) => {
+      const newValue = (value[0] instanceof Object ? stringify(value[0], tabsize) : value[0]);
+      const oldValue = (value[1] instanceof Object ? stringify(value[1], tabsize) : value[1]);
+      return [newValue, oldValue];
+    },
+    toString: (key, value, tabsize) => {
+      const [newValue, oldValue] = value;
+      return `\n${tab(tabsize)}+ ${key}: ${newValue}\n${tab(tabsize)}- ${key}: ${oldValue}`;
+    },
+  },
+  added: {
+    symbol: '+',
+    getValue: ({ value }, tabsize) => (value instanceof Object ? stringify(value, tabsize) : value),
+    toString: (key, value, tabsize) => `\n${tab(tabsize)}+ ${key}: ${value}`,
+  },
+  deleted: {
+    symbol: '-',
+    getValue: ({ value }, tabsize) => (value instanceof Object ? stringify(value, tabsize) : value),
+    toString: (key, value, tabsize) => `\n${tab(tabsize)}- ${key}: ${value}`,
+  },
+  unchanged: {
+    symbol: ' ',
+    getValue: ({ value }, tabsize) => (value instanceof Object ? stringify(value, tabsize) : value),
+    toString: (key, value, tabsize) => `\n${tab(tabsize)}  ${key}: ${value}`,
+  },
+};
+
+export default (ast) => {
+  const iter = (nodes, tabsize) => {
+    const str = nodes.reduce((acc, node) => {
+      const { key, type } = node;
+      const nodeActionForRender = nodeTypesForRender[type];
+      const value = nodeActionForRender.getValue(node, tabsize + 1, iter);
+      return `${acc}${nodeActionForRender.toString(key, value, tabsize)}`;
+    }, '');
+    return tabsize === 1
+      ? `{${str}\n${tab(tabsize - 1)}}` : `{${str}\n${tab(tabsize - 1)}${tabForClosingBracket}}`;
+  };
+  return iter(ast, 1);
+};
