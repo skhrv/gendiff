@@ -18,30 +18,28 @@ const file2INIflat = pathToFixture('after.ini');
 const file1INIrecursive = pathToFixture('beforeRecursive.ini');
 const file2INIrecursive = pathToFixture('afterRecursive.ini');
 
-const expectedFlat = pathToFixture('expectedFlat.txt');
-const expectedRecursive = pathToFixture('expectedRecursive.txt');
+const expectedFlatFilePath = pathToFixture('expectedFlat.txt');
+const expectedRecursiveFilePath = pathToFixture('expectedRecursive.txt');
 
 describe('flat data', () => {
-  const expected = fs.readFileSync(expectedFlat, 'utf-8');
-  it('json', () => {
-    expect(genDiff(file1JSONflat, file2JSONflat)).toBe(expected);
+  const expectedFlat = fs.readFileSync(expectedFlatFilePath, 'utf-8');
+  const expectedRecursive = fs.readFileSync(expectedRecursiveFilePath, 'utf-8');
+  it('json flat', () => {
+    expect(genDiff(file1JSONflat, file2JSONflat)).toBe(expectedFlat);
   });
-  it('yaml', () => {
-    expect(genDiff(file1YAMLflat, file2YAMLflat)).toBe(expected);
+  it('yaml flat', () => {
+    expect(genDiff(file1YAMLflat, file2YAMLflat)).toBe(expectedFlat);
   });
-  it('ini', () => {
-    expect(genDiff(file1INIflat, file2INIflat)).toBe(expected);
+  it('ini flat', () => {
+    expect(genDiff(file1INIflat, file2INIflat)).toBe(expectedFlat);
   });
-});
-describe('recursive data', () => {
-  const expected = fs.readFileSync(expectedRecursive, 'utf-8');
-  it('json', () => {
-    expect(genDiff(file1JSONrecursive, file2JSONrecursive)).toBe(expected);
+  it('json recursive', () => {
+    expect(genDiff(file1JSONrecursive, file2JSONrecursive)).toBe(expectedRecursive);
   });
-  it('yaml', () => {
-    expect(genDiff(file1YAMLrecursive, file2YAMLrecursive)).toBe(expected);
+  it('yaml recursive', () => {
+    expect(genDiff(file1YAMLrecursive, file2YAMLrecursive)).toBe(expectedRecursive);
   });
-  it('ini', () => {
-    expect(genDiff(file1INIrecursive, file2INIrecursive)).toBe(expected);
+  it('ini recursive', () => {
+    expect(genDiff(file1INIrecursive, file2INIrecursive)).toBe(expectedRecursive);
   });
 });
