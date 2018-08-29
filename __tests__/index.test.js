@@ -3,43 +3,46 @@ import genDiff from '../src';
 
 const pathToFixture = filename => `__tests__/__fixtures__/${filename}`;
 
-const file1JSONflat = pathToFixture('before.json');
-const file2JSONflat = pathToFixture('after.json');
-const file1JSONrecursive = pathToFixture('beforeRecursive.json');
-const file2JSONrecursive = pathToFixture('afterRecursive.json');
+const typesFile = ['.json', '.yaml', '.ini'];
 
-const file1YAMLflat = pathToFixture('before.yaml');
-const file2YAMLflat = pathToFixture('after.yaml');
-const file1YAMLrecursive = pathToFixture('beforeRecursive.yaml');
-const file2YAMLrecursive = pathToFixture('afterRecursive.yaml');
-
-const file1INIflat = pathToFixture('before.ini');
-const file2INIflat = pathToFixture('after.ini');
-const file1INIrecursive = pathToFixture('beforeRecursive.ini');
-const file2INIrecursive = pathToFixture('afterRecursive.ini');
+const filename1Flat = pathToFixture('before');
+const filename2Flat = pathToFixture('after');
+const filename1Recursive = pathToFixture('beforeRecursive');
+const filename2Recursive = pathToFixture('afterRecursive');
 
 const expectedFlatFilePath = pathToFixture('expectedFlat.txt');
 const expectedRecursiveFilePath = pathToFixture('expectedRecursive.txt');
+const expectedPlainFilePath = pathToFixture('expectedPlain.txt');
+
+const iter = (file1, file2, type, option) => {
+  const before = `${file1}${type}`;
+  const after = `${file2}${type}`;
+  return genDiff(before, after, option);
+};
 
 describe('flat data', () => {
   const expectedFlat = fs.readFileSync(expectedFlatFilePath, 'utf-8');
   const expectedRecursive = fs.readFileSync(expectedRecursiveFilePath, 'utf-8');
+  const expectedPlain = fs.readFileSync(expectedPlainFilePath, 'utf-8');
   it('json flat', () => {
-    expect(genDiff(file1JSONflat, file2JSONflat)).toBe(expectedFlat);
+    expect(iter(filename1Flat, filename2Flat, typesFile[0])).toBe(expectedFlat);
   });
   it('yaml flat', () => {
-    expect(genDiff(file1YAMLflat, file2YAMLflat)).toBe(expectedFlat);
+    expect(iter(filename1Flat, filename2Flat, typesFile[1])).toBe(expectedFlat);
   });
   it('ini flat', () => {
-    expect(genDiff(file1INIflat, file2INIflat)).toBe(expectedFlat);
+    expect(iter(filename1Flat, filename2Flat, typesFile[2])).toBe(expectedFlat);
   });
   it('json recursive', () => {
-    expect(genDiff(file1JSONrecursive, file2JSONrecursive)).toBe(expectedRecursive);
+    expect(iter(filename1Recursive, filename2Recursive, typesFile[0])).toBe(expectedRecursive);
   });
   it('yaml recursive', () => {
-    expect(genDiff(file1YAMLrecursive, file2YAMLrecursive)).toBe(expectedRecursive);
+    expect(iter(filename1Recursive, filename2Recursive, typesFile[1])).toBe(expectedRecursive);
   });
   it('ini recursive', () => {
-    expect(genDiff(file1INIrecursive, file2INIrecursive)).toBe(expectedRecursive);
+    expect(iter(filename1Recursive, filename2Recursive, typesFile[2])).toBe(expectedRecursive);
+  });
+  it('plain render', () => {
+    expect(iter(filename1Recursive, filename2Recursive, typesFile[1], 'plain')).toBe(expectedPlain);
   });
 });
