@@ -18,8 +18,11 @@ const file2INIflat = pathToFixture('after.ini');
 const file1INIrecursive = pathToFixture('beforeRecursive.ini');
 const file2INIrecursive = pathToFixture('afterRecursive.ini');
 
+const expectedFlat = pathToFixture('expectedFlat.txt');
+const expectedRecursive = pathToFixture('expectedRecursive.txt');
+
 describe('flat data', () => {
-  const expected = fs.readFileSync('__tests__/__fixtures__/expected.test1.txt', 'utf-8');
+  const expected = fs.readFileSync(expectedFlat, 'utf-8');
   it('json', () => {
     expect(genDiff(file1JSONflat, file2JSONflat)).toBe(expected);
   });
@@ -31,7 +34,7 @@ describe('flat data', () => {
   });
 });
 describe('recursive data', () => {
-  const expected = fs.readFileSync('__tests__/__fixtures__/expected.test2.txt', 'utf-8');
+  const expected = fs.readFileSync(expectedRecursive, 'utf-8');
   it('json', () => {
     expect(genDiff(file1JSONrecursive, file2JSONrecursive)).toBe(expected);
   });
