@@ -11,3 +11,6 @@
 
 
 Четвертый шаг https://asciinema.org/a/5WE98vSNdICQVZTOIczZ0LAdK
+
+
+Пятый шаг https://asciinema.org/a/Vzxx0iC8JN7xXqciOPT8QdLsD
