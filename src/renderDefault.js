@@ -13,14 +13,15 @@ const stringify = (obj, tabsize) => {
   return `{${str}\n${tab(tabsize - 1)}${tabForClosingBracket}}`;
 };
 
+const getSimpeValue = ({ value }, tabsize) => (value instanceof Object
+  ? stringify(value, tabsize) : value);
+
 const nodeTypesForRender = {
   nest: {
-    symbol: ' ',
     getValue: ({ children }, tabsize, func) => func(children, tabsize),
     toString: (key, value, tabsize) => `\n${tab(tabsize)}  ${key}: ${value}`,
   },
   changed: {
-    symbol: '+',
     getValue: ({ value }, tabsize) => {
       const newValue = (value[0] instanceof Object ? stringify(value[0], tabsize) : value[0]);
       const oldValue = (value[1] instanceof Object ? stringify(value[1], tabsize) : value[1]);
@@ -32,18 +33,15 @@ const nodeTypesForRender = {
     },
   },
   added: {
-    symbol: '+',
-    getValue: ({ value }, tabsize) => (value instanceof Object ? stringify(value, tabsize) : value),
+    getValue: getSimpeValue,
     toString: (key, value, tabsize) => `\n${tab(tabsize)}+ ${key}: ${value}`,
   },
   deleted: {
-    symbol: '-',
-    getValue: ({ value }, tabsize) => (value instanceof Object ? stringify(value, tabsize) : value),
+    getValue: getSimpeValue,
     toString: (key, value, tabsize) => `\n${tab(tabsize)}- ${key}: ${value}`,
   },
   unchanged: {
-    symbol: ' ',
-    getValue: ({ value }, tabsize) => (value instanceof Object ? stringify(value, tabsize) : value),
+    getValue: getSimpeValue,
     toString: (key, value, tabsize) => `\n${tab(tabsize)}  ${key}: ${value}`,
   },
 };
