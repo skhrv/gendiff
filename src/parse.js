@@ -2,9 +2,9 @@ import yaml from 'js-yaml';
 import ini from 'ini';
 
 const dataFormats = {
-  '.yaml': data => yaml.safeLoad(data),
-  '.json': data => JSON.parse(data),
-  '.ini': data => ini.parse(data),
+  '.yaml': yaml.safeLoad,
+  '.json': JSON.parse,
+  '.ini': ini.parse,
 };
 
 const getParsing = ext => dataFormats[ext];

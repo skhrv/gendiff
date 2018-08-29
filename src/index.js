@@ -2,23 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import parse from './parse';
 import buildAST from './buildAST';
-
+import render from './render';
 
 const getData = pathfile => fs.readFileSync(pathfile, 'utf-8');
-
-const nodeTypesForRender = {
-  added: '+',
-  deleted: '-',
-  unchanged: ' ',
-};
-
-const render = (ast) => {
-  const str = ast.reduce((acc, item) => {
-    const { key, value, type } = item;
-    return `${acc}\n    ${nodeTypesForRender[type]} ${key}: ${value}`;
-  }, '');
-  return `{${str}\n  }`;
-};
 
 export default (pathToBefore, pathToAfter) => {
   const extBefore = path.extname(pathToBefore);
