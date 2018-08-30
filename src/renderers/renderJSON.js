@@ -8,7 +8,7 @@ const getJSONfromNodes = (obj) => {
 
 const valueToJSON = value => (value instanceof Object ? getJSONfromNodes(value) : value);
 
-const nodeTypesForRender = {
+const nodeTypesForiter = {
   nest: {
     getValue: ({ children }, func) => func(children),
     toJSON: ({ key }, valueAfter) => ({ type: 'unchanged', key, valueAfter }),
@@ -33,11 +33,14 @@ const nodeTypesForRender = {
   },
 };
 
-const render = ast => ast.map((node) => {
-  const { type } = node;
-  const nodeActionForRender = nodeTypesForRender[type];
-  const value = nodeActionForRender.getValue(node, render);
-  return nodeActionForRender.toJSON(node, value);
-});
+const render = (ast) => {
+  const iter = nodes => nodes.map((node) => {
+    const { type } = node;
+    const nodeActionForiter = nodeTypesForiter[type];
+    const value = nodeActionForiter.getValue(node, iter);
+    return nodeActionForiter.toJSON(node, value);
+  });
+  return JSON.stringify(iter(ast), null, 2);
+};
 
 export default render;

@@ -19,9 +19,8 @@ const testRender = (type) => {
     const after = '__tests__/__fixtures__/after_recursive.yaml';
     const expectedFilePath = `__tests__/__fixtures__/expected_${type}.txt`;
     const expectedFile = fs.readFileSync(expectedFilePath, 'utf-8');
-    const expected = type === 'json' ? JSON.parse(expectedFile) : expectedFile;
     const actual = genDiff(before, after, type);
-    expect(actual).toEqual(expected);
+    expect(actual).toBe(expectedFile);
   });
 };
 

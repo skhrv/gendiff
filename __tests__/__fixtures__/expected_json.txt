@@ -1,63 +1,63 @@
 [
   {
-    "key": "common",
     "type": "unchanged",
+    "key": "common",
     "valueAfter": [
       {
-        "key": "setting1",
         "type": "unchanged",
+        "key": "setting1",
         "valueAfter": "Value 1"
       },
       {
-        "key": "setting2",
         "type": "deleted",
+        "key": "setting2",
         "valueBefore": "200"
       },
       {
-        "key": "setting3",
         "type": "changed",
+        "key": "setting3",
+        "valueBefore": true,
         "valueAfter": [
           {
-            "key": "key",
             "type": "unchanged",
+            "key": "key",
             "value": "value"
           }
-        ],
-        "valueBefore": true
+        ]
       },
       {
-        "key": "setting6",
         "type": "unchanged",
+        "key": "setting6",
         "valueAfter": [
           {
-            "key": "key",
             "type": "unchanged",
+            "key": "key",
             "valueAfter": "value"
           },
           {
-            "key": "ops",
             "type": "added",
+            "key": "ops",
             "valueAfter": "vops"
           }
         ]
       },
       {
-        "key": "follow",
         "type": "added",
+        "key": "follow",
         "valueAfter": false
       },
       {
-        "key": "setting4",
         "type": "added",
+        "key": "setting4",
         "valueAfter": "blah blah"
       },
       {
-        "key": "setting5",
         "type": "added",
+        "key": "setting5",
         "valueAfter": [
           {
-            "key": "key5",
             "type": "unchanged",
+            "key": "key5",
             "value": "value5"
           }
         ]
@@ -65,52 +65,52 @@
     ]
   },
   {
-    "key": "group1",
     "type": "unchanged",
+    "key": "group1",
     "valueAfter": [
       {
-        "key": "baz",
         "type": "changed",
-        "valueAfter": "bars",
-        "valueBefore": "bas"
+        "key": "baz",
+        "valueBefore": "bas",
+        "valueAfter": "bars"
       },
       {
-        "key": "foo",
         "type": "unchanged",
+        "key": "foo",
         "valueAfter": "bar"
       },
       {
-        "key": "nest",
         "type": "changed",
-        "valueAfter": "str",
+        "key": "nest",
         "valueBefore": [
           {
-            "key": "key",
             "type": "unchanged",
+            "key": "key",
             "value": "value"
           }
-        ]
+        ],
+        "valueAfter": "str"
       }
     ]
   },
   {
-    "key": "group2",
     "type": "deleted",
+    "key": "group2",
     "valueBefore": [
       {
-        "key": "abc",
         "type": "unchanged",
+        "key": "abc",
         "value": "12345"
       }
     ]
   },
   {
-    "key": "group3",
     "type": "added",
+    "key": "group3",
     "valueAfter": [
       {
-        "key": "fee",
         "type": "unchanged",
+        "key": "fee",
         "value": "100500"
       }
     ]
