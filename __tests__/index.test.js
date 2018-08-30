@@ -14,7 +14,7 @@ const test = (ext, type) => {
   });
 };
 const testRender = (type) => {
-  it(`${type} render`, () => {
+  it(`render ${type}`, () => {
     const before = '__tests__/__fixtures__/before_recursive.json';
     const after = '__tests__/__fixtures__/after_recursive.yaml';
     const expectedFilePath = `__tests__/__fixtures__/expected_${type}.txt`;
