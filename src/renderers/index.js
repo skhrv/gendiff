@@ -1,6 +1,6 @@
-import renderPlain from './renderers/renderPlain';
-import renderDiff from './renderers/renderDiff';
-import renderJSON from './renderers/renderJSON';
+import renderPlain from './renderPlain';
+import renderDiff from './renderDiff';
+import renderJSON from './renderJSON';
 
 export default (ast, option) => {
   switch (option) {
