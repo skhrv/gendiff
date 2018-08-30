@@ -7,8 +7,9 @@ const getJSONfromNodes = (obj) => {
 };
 
 const valueToJSON = value => (value instanceof Object ? getJSONfromNodes(value) : value);
+const nodeToJSON = nameValue => ({ type, key }, value) => ({ type, key, [nameValue]: value });
 
-const nodeTypesForiter = {
+const nodeTypesForRender = {
   nest: {
     getValue: ({ children }, func) => func(children),
     toJSON: ({ key }, valueAfter) => ({ type: 'unchanged', key, valueAfter }),
@@ -21,24 +22,24 @@ const nodeTypesForiter = {
   },
   added: {
     getValue: ({ valueAfter }) => valueToJSON(valueAfter),
-    toJSON: ({ type, key }, valueAfter) => ({ type, key, valueAfter }),
+    toJSON: nodeToJSON('valueAfter'),
   },
   deleted: {
     getValue: ({ valueBefore }) => valueToJSON(valueBefore),
-    toJSON: ({ type, key }, valueBefore) => ({ type, key, valueBefore }),
+    toJSON: nodeToJSON('valueBefore'),
   },
   unchanged: {
     getValue: ({ valueAfter }) => valueToJSON(valueAfter),
-    toJSON: ({ type, key }, valueAfter) => ({ type, key, valueAfter }),
+    toJSON: nodeToJSON('valueAfter'),
   },
 };
 
 const render = (ast) => {
   const iter = nodes => nodes.map((node) => {
     const { type } = node;
-    const nodeActionForiter = nodeTypesForiter[type];
-    const value = nodeActionForiter.getValue(node, iter);
-    return nodeActionForiter.toJSON(node, value);
+    const nodeActionForRender = nodeTypesForRender[type];
+    const value = nodeActionForRender.getValue(node, iter);
+    return nodeActionForRender.toJSON(node, value);
   });
   return JSON.stringify(iter(ast), null, 2);
 };
