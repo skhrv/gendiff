@@ -13,7 +13,7 @@ const stringify = (obj, tabsize) => {
   return `{${str}\n${tab(tabsize - 1)}${tabForClosingBracket}}`;
 };
 
-const getSimpeValue = ({ value }, tabsize) => (value instanceof Object
+const valueToString = (value, tabsize) => (value instanceof Object
   ? stringify(value, tabsize) : value);
 
 const nodeTypesForRender = {
@@ -22,26 +22,21 @@ const nodeTypesForRender = {
     toString: (key, value, tabsize) => `\n${tab(tabsize)}  ${key}: ${value}`,
   },
   changed: {
-    getValue: ({ value }, tabsize) => {
-      const newValue = (value[0] instanceof Object ? stringify(value[0], tabsize) : value[0]);
-      const oldValue = (value[1] instanceof Object ? stringify(value[1], tabsize) : value[1]);
-      return [newValue, oldValue];
-    },
-    toString: (key, value, tabsize) => {
-      const [newValue, oldValue] = value;
-      return `\n${tab(tabsize)}+ ${key}: ${newValue}\n${tab(tabsize)}- ${key}: ${oldValue}`;
-    },
+    getValue: ({ valueBefore, valueAfter }, tabsize) => [valueToString(valueBefore, tabsize),
+      valueToString(valueAfter, tabsize)],
+
+    toString: (key, value, tabsize) => `\n${tab(tabsize)}- ${key}: ${value[0]}\n${tab(tabsize)}+ ${key}: ${value[1]}`,
   },
   added: {
-    getValue: getSimpeValue,
+    getValue: ({ valueAfter }, tabsize) => valueToString(valueAfter, tabsize),
     toString: (key, value, tabsize) => `\n${tab(tabsize)}+ ${key}: ${value}`,
   },
   deleted: {
-    getValue: getSimpeValue,
+    getValue: ({ valueBefore }, tabsize) => valueToString(valueBefore, tabsize),
     toString: (key, value, tabsize) => `\n${tab(tabsize)}- ${key}: ${value}`,
   },
   unchanged: {
-    getValue: getSimpeValue,
+    getValue: ({ valueAfter }, tabsize) => valueToString(valueAfter, tabsize),
     toString: (key, value, tabsize) => `\n${tab(tabsize)}  ${key}: ${value}`,
   },
 };

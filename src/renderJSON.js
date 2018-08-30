@@ -6,38 +6,38 @@ const getJSONfromNodes = (obj) => {
   }, '');
 };
 
-
-const getSimpeValue = ({ value }) => (value instanceof Object
-  ? getJSONfromNodes(value) : value);
+const valueToJSON = value => (value instanceof Object ? getJSONfromNodes(value) : value);
 
 const nodeTypesForRender = {
   nest: {
     getValue: ({ children }, func) => func(children),
+    toJSON: ({ key }, valueAfter) => ({ type: 'unchanged', key, valueAfter }),
   },
   changed: {
-    getValue: ({ value }) => {
-      const newValue = value[0] instanceof Object ? getJSONfromNodes(value[0]) : value[0];
-      const oldValue = value[1] instanceof Object ? getJSONfromNodes(value[1]) : value[1];
-      return { newValue, oldValue };
-    },
+    getValue: ({ valueBefore, valueAfter }) => [valueToJSON(valueBefore), valueToJSON(valueAfter)],
+    toJSON: ({ type, key }, value) => ({
+      type, key, valueBefore: value[0], valueAfter: value[1],
+    }),
   },
   added: {
-    getValue: getSimpeValue,
+    getValue: ({ valueAfter }) => valueToJSON(valueAfter),
+    toJSON: ({ type, key }, valueAfter) => ({ type, key, valueAfter }),
   },
   deleted: {
-    getValue: getSimpeValue,
+    getValue: ({ valueBefore }) => valueToJSON(valueBefore),
+    toJSON: ({ type, key }, valueBefore) => ({ type, key, valueBefore }),
   },
   unchanged: {
-    getValue: getSimpeValue,
+    getValue: ({ valueAfter }) => valueToJSON(valueAfter),
+    toJSON: ({ type, key }, valueAfter) => ({ type, key, valueAfter }),
   },
 };
 
 const render = ast => ast.map((node) => {
-  const { key, type } = node;
+  const { type } = node;
   const nodeActionForRender = nodeTypesForRender[type];
   const value = nodeActionForRender.getValue(node, render);
-  const newType = type === 'nest' ? 'unchanged' : type;
-  return { type: newType, key, value };
+  return nodeActionForRender.toJSON(node, value);
 });
 
 export default render;

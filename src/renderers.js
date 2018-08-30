@@ -1,5 +1,5 @@
 import renderPlain from './renderPlain';
-import renderDefault from './renderDefault';
+import renderDiff from './renderDiff';
 import renderJSON from './renderJSON';
 
 export default (ast, option) => {
@@ -9,6 +9,6 @@ export default (ast, option) => {
     case ('plain'):
       return renderPlain(ast);
     default:
-      return renderDefault(ast);
+      return renderDiff(ast);
   }
 };

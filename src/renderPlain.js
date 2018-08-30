@@ -1,4 +1,4 @@
-const valueToStr = value => (value instanceof Object ? '[complex value]' : value);
+const valueToPlainStr = value => (value instanceof Object ? '[complex value]' : value);
 
 const nodeTypesForRender = {
   nest: {
@@ -6,26 +6,24 @@ const nodeTypesForRender = {
     toString: (key, value) => value,
   },
   changed: {
-    getValue: ({ value }) => {
-      const newValue = valueToStr(value[0]);
-      const oldValue = valueToStr(value[1]);
-      return [newValue, oldValue];
-    },
+    getValue: ({ valueBefore, valueAfter }) => [valueToPlainStr(valueAfter),
+      valueToPlainStr(valueBefore)],
+
     toString: (key, value, path) => {
-      const [newValue, oldValue] = value;
-      return `Property '${path}' was updated. From '${oldValue}' to '${newValue}'`;
+      const [valueAfter, valueBefore] = value;
+      return `Property '${path}' was updated. From '${valueBefore}' to '${valueAfter}'`;
     },
   },
   added: {
-    getValue: ({ value }) => valueToStr(value),
+    getValue: ({ valueAfter }) => valueToPlainStr(valueAfter),
     toString: (key, value, path) => `Property '${path}' was added with value: '${value}'`,
   },
   deleted: {
-    getValue: ({ value }) => valueToStr(value),
+    getValue: ({ valueAfter }) => valueToPlainStr(valueAfter),
     toString: (key, value, path) => `Property '${path}' was removed`,
   },
   unchanged: {
-    getValue: ({ value }) => valueToStr(value),
+    getValue: ({ valueAfter }) => valueToPlainStr(valueAfter),
     toString: () => '',
   },
 };

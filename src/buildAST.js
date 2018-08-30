@@ -1,4 +1,3 @@
-
 import _ from 'lodash';
 
 const nodeTypes = [
@@ -14,22 +13,24 @@ const nodeTypes = [
     type: 'unchanged',
     check: (key, data1, data2) => _.has(data1, key) && _.has(data2, key)
       && data1[key] === data2[key],
-    process: (key, data1) => ({ key, value: data1[key], type: 'unchanged' }),
+    process: (key, data1) => ({ key, valueAfter: data1[key], type: 'unchanged' }),
   },
   {
     type: 'changed',
     check: (key, data1, data2) => _.has(data1, key) && _.has(data2, key),
-    process: (key, data1, data2) => ({ key, value: [data2[key], data1[key]], type: 'changed' }),
+    process: (key, data1, data2) => ({
+      key, valueBefore: data1[key], valueAfter: data2[key], type: 'changed',
+    }),
   },
   {
     type: 'added',
     check: (key, data1, data2) => !_.has(data1, key) && _.has(data2, key),
-    process: (key, data1, data2) => ({ key, value: data2[key], type: 'added' }),
+    process: (key, data1, data2) => ({ key, valueAfter: data2[key], type: 'added' }),
   },
   {
     type: 'deleted',
     check: (key, data1, data2) => _.has(data1, key) && !_.has(data2, key),
-    process: (key, data1) => ({ key, value: data1[key], type: 'deleted' }),
+    process: (key, data1) => ({ key, valueBefore: data1[key], type: 'deleted' }),
   },
 ];
 
