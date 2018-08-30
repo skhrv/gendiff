@@ -17,3 +17,6 @@
 
 
 Шестой шаг https://asciinema.org/a/49038tEpKIzwIUzcHZMjGfkus
+
+
+Седьмой шаг https://asciinema.org/a/QxBxt8wnyOPZoOMjm1SXkLpis
