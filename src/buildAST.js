@@ -7,7 +7,7 @@ const nodeTypes = [
     check: (key, data1, data2) => _.has(data1, key) && _.has(data2, key)
       && data1[key] instanceof Object && data2[key] instanceof Object,
     process: (key, data1, data2, func) => ({
-      key, value: data1[key], type: 'nest', children: func(data1[key], data2[key]),
+      key, type: 'nest', children: func(data1[key], data2[key]),
     }),
   },
   {
