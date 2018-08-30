@@ -16,10 +16,12 @@ const stringify = (obj, tabsize) => {
 const valueToString = (value, tabsize) => (value instanceof Object
   ? stringify(value, tabsize) : value);
 
+const nodeToStr = symbol => (key, value, tabsize) => `\n${tab(tabsize)}${symbol} ${key}: ${value}`;
+
 const nodeTypesForRender = {
   nest: {
     getValue: ({ children }, tabsize, func) => func(children, tabsize),
-    toString: (key, value, tabsize) => `\n${tab(tabsize)}  ${key}: ${value}`,
+    toString: nodeToStr(' '),
   },
   changed: {
     getValue: ({ valueBefore, valueAfter }, tabsize) => [valueToString(valueBefore, tabsize),
@@ -29,15 +31,17 @@ const nodeTypesForRender = {
   },
   added: {
     getValue: ({ valueAfter }, tabsize) => valueToString(valueAfter, tabsize),
-    toString: (key, value, tabsize) => `\n${tab(tabsize)}+ ${key}: ${value}`,
+    toString: nodeToStr('+'),
   },
   deleted: {
+    symbol: '-',
     getValue: ({ valueBefore }, tabsize) => valueToString(valueBefore, tabsize),
-    toString: (key, value, tabsize) => `\n${tab(tabsize)}- ${key}: ${value}`,
+    toString: nodeToStr('-'),
   },
   unchanged: {
+    symbol: ' ',
     getValue: ({ valueAfter }, tabsize) => valueToString(valueAfter, tabsize),
-    toString: (key, value, tabsize) => `\n${tab(tabsize)}  ${key}: ${value}`,
+    toString: nodeToStr(' '),
   },
 };
 
