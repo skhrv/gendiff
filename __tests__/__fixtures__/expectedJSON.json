@@ -1,0 +1,124 @@
+[
+  {
+    "key": "common",
+    "type": "unchanged",
+    "value": [
+      {
+        "key": "setting1",
+        "type": "unchanged",
+        "value": "Value 1"
+      },
+      {
+        "key": "setting2",
+        "type": "deleted",
+        "value": "200"
+      },
+      {
+        "key": "setting3",
+        "type": "changed",
+        "value": {
+          "newValue": [
+            {
+              "key": "key",
+              "type": "unchanged",
+              "value": "value"
+            }
+          ],
+          "oldValue": true
+        }
+      },
+      {
+        "key": "setting6",
+        "type": "unchanged",
+        "value": [
+          {
+            "key": "key",
+            "type": "unchanged",
+            "value": "value"
+          },
+          {
+            "key": "ops",
+            "type": "added",
+            "value": "vops"
+          }
+        ]
+      },
+      {
+        "key": "follow",
+        "type": "added",
+        "value": false
+      },
+      {
+        "key": "setting4",
+        "type": "added",
+        "value": "blah blah"
+      },
+      {
+        "key": "setting5",
+        "type": "added",
+        "value": [
+          {
+            "key": "key5",
+            "type": "unchanged",
+            "value": "value5"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "group1",
+    "type": "unchanged",
+    "value": [
+      {
+        "key": "baz",
+        "type": "changed",
+        "value": {
+          "newValue": "bars",
+          "oldValue": "bas"
+        }
+      },
+      {
+        "key": "foo",
+        "type": "unchanged",
+        "value": "bar"
+      },
+      {
+        "key": "nest",
+        "type": "changed",
+        "value": {
+          "newValue": "str",
+          "oldValue": [
+            {
+              "key": "key",
+              "type": "unchanged",
+              "value": "value"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "key": "group2",
+    "type": "deleted",
+    "value": [
+      {
+        "key": "abc",
+        "type": "unchanged",
+        "value": "12345"
+      }
+    ]
+  },
+  {
+    "key": "group3",
+    "type": "added",
+    "value": [
+      {
+        "key": "fee",
+        "type": "unchanged",
+        "value": "100500"
+      }
+    ]
+  }
+]

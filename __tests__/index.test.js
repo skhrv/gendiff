@@ -13,6 +13,7 @@ const filename2Recursive = pathToFixture('afterRecursive');
 const expectedFlatFilePath = pathToFixture('expectedFlat.txt');
 const expectedRecursiveFilePath = pathToFixture('expectedRecursive.txt');
 const expectedPlainFilePath = pathToFixture('expectedPlain.txt');
+const expectedJSONFilePath = pathToFixture('expectedJSON.json');
 
 const iter = (file1, file2, type, option) => {
   const before = `${file1}${type}`;
@@ -24,6 +25,7 @@ describe('flat data', () => {
   const expectedFlat = fs.readFileSync(expectedFlatFilePath, 'utf-8');
   const expectedRecursive = fs.readFileSync(expectedRecursiveFilePath, 'utf-8');
   const expectedPlain = fs.readFileSync(expectedPlainFilePath, 'utf-8');
+  const expectedJSON = JSON.parse(fs.readFileSync(expectedJSONFilePath, 'utf-8'));
   it('json flat', () => {
     expect(iter(filename1Flat, filename2Flat, typesFile[0])).toBe(expectedFlat);
   });
@@ -44,5 +46,8 @@ describe('flat data', () => {
   });
   it('plain render', () => {
     expect(iter(filename1Recursive, filename2Recursive, typesFile[1], 'plain')).toBe(expectedPlain);
+  });
+  it('json render', () => {
+    expect(iter(filename1Recursive, filename2Recursive, typesFile[1], 'json')).toEqual(expectedJSON);
   });
 });
