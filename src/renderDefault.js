@@ -23,8 +23,8 @@ const nodeTypesForRender = {
   },
   changed: {
     getValue: ({ value }, tabsize) => {
-      const newValue = (value[0] instanceof Object ? stringify(value[0], tabsize) : value[0]);
-      const oldValue = (value[1] instanceof Object ? stringify(value[1], tabsize) : value[1]);
+      const newValue = getSimpeValue(value[0], tabsize);
+      const oldValue = getSimpeValue(value[0], tabsize);
       return [newValue, oldValue];
     },
     toString: (key, value, tabsize) => {
