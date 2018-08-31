@@ -22,7 +22,7 @@ const nodeTypesForRender = {
 export default (ast) => {
   const iter = (nodes, path) => nodes.map((node) => {
     const { key, type } = node;
-    const newPath = path.length === 0 ? key : `${path}.${key}`;
+    const newPath = _.trim(`${path}.${key}`, '.');
     const nodeActionForRender = nodeTypesForRender[type];
     return nodeActionForRender.toString(node, newPath, iter);
   }, '');
