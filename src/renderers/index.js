@@ -1,11 +1,10 @@
 import renderPlain from './renderPlain';
 import renderDiff from './renderDiff';
-import renderJSON from './renderJSON';
 
 export default (ast, option) => {
   switch (option) {
     case ('json'):
-      return renderJSON(ast);
+      return JSON.stringify(ast, null, 2);
     case ('plain'):
       return renderPlain(ast);
     default:

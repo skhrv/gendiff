@@ -4,7 +4,7 @@ const valueToPlainStr = value => (_.isObject(value) ? '[complex value]' : value)
 
 const nodeTypesForRender = {
   nest: {
-    toString: ({ children }, path, func) => func(children, path),
+    toString: ({ children }, path, func) => func(children, `${path}.`),
   },
   changed: {
     toString: ({ valueBefore, valueAfter }, path) => `Property '${path}' was updated. From '${valueToPlainStr(valueBefore)}' to '${valueToPlainStr(valueAfter)}'`,
@@ -22,7 +22,7 @@ const nodeTypesForRender = {
 export default (ast) => {
   const iter = (nodes, path) => nodes.map((node) => {
     const { key, type } = node;
-    const newPath = _.trim(`${path}.${key}`, '.');
+    const newPath = `${path}${key}`;
     const nodeActionForRender = nodeTypesForRender[type];
     return nodeActionForRender.toString(node, newPath, iter);
   }, '');
