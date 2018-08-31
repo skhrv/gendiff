@@ -1,12 +1,14 @@
+import _ from 'lodash';
+
 const getJSONfromNodes = (obj) => {
   const keys = Object.keys(obj);
   return keys.map((key) => {
-    const value = obj[key] instanceof Object ? getJSONfromNodes(obj[key]) : obj[key];
+    const value = _.isObject(obj[key]) ? getJSONfromNodes(obj[key]) : obj[key];
     return { type: 'unchanged', key, value };
   }, '');
 };
 
-const valueToJSON = value => (value instanceof Object ? getJSONfromNodes(value) : value);
+const valueToJSON = value => (_.isObject(value) ? getJSONfromNodes(value) : value);
 const nodeToJSON = nameValue => ({ type, key }, value) => ({ type, key, [nameValue]: value });
 
 const nodeTypesForRender = {

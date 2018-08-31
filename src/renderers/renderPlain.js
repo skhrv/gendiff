@@ -1,4 +1,6 @@
-const valueToPlainStr = value => (value instanceof Object ? '[complex value]' : value);
+import _ from 'lodash';
+
+const valueToPlainStr = value => (_.isObject(value) ? '[complex value]' : value);
 
 const nodeTypesForRender = {
   nest: {
@@ -28,13 +30,14 @@ const nodeTypesForRender = {
   },
 };
 export default (ast) => {
-  const iter = (nodes, path) => nodes.reduce((acc, node) => {
+  const iter = (nodes, path) => nodes.map((node) => {
     const { key, type } = node;
     const newPath = path.length === 0 ? key : `${path}.${key}`;
     const nodeActionForRender = nodeTypesForRender[type];
     const value = nodeActionForRender.getValue(node, newPath, iter);
     const str = nodeActionForRender.toString(key, value, newPath);
-    return str.length === 0 || acc.length === 0 ? `${acc}${str}` : `${acc}\n${str}`;
+    return str;
   }, '');
-  return iter(ast, '');
+  const plainNodes = _.flattenDeep(iter(ast, ''));
+  return plainNodes.filter(_.identity).join('\n');
 };

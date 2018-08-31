@@ -7,14 +7,13 @@ const tabForClosingBracket = '  ';
 const stringify = (obj, tabsize) => {
   const keys = Object.keys(obj);
   const str = keys.reduce((acc, key) => {
-    const value = obj[key] instanceof Object ? stringify(obj[key], tabsize + 1) : obj[key];
+    const value = _.isObject(obj[key]) ? stringify(obj[key], tabsize + 1) : obj[key];
     return `${acc}\n${tab(tabsize)}  ${key}: ${value}`;
   }, '');
   return `{${str}\n${tab(tabsize - 1)}${tabForClosingBracket}}`;
 };
 
-const valueToString = (value, tabsize) => (value instanceof Object
-  ? stringify(value, tabsize) : value);
+const valueToString = (value, tabsize) => (_.isObject(value) ? stringify(value, tabsize) : value);
 
 const nodeToStr = symbol => (key, value, tabsize) => `\n${tab(tabsize)}${symbol} ${key}: ${value}`;
 
