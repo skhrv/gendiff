@@ -34,22 +34,13 @@ const nodeTypesForRender = {
     },
   },
   added: {
-    toString: ({ key, valueAfter }, deepLevel) => {
-      const processedValue = valueToString(valueAfter, deepLevel);
-      return nodeToStr(key, processedValue, '+', deepLevel);
-    },
+    toString: ({ key, valueAfter }, deepLevel) => nodeToStr(key, valueToString(valueAfter, deepLevel), '+', deepLevel),
   },
   deleted: {
-    toString: ({ key, valueBefore }, deepLevel) => {
-      const processedValue = valueToString(valueBefore, deepLevel);
-      return nodeToStr(key, processedValue, '-', deepLevel);
-    },
+    toString: ({ key, valueBefore }, deepLevel) => nodeToStr(key, valueToString(valueBefore, deepLevel), '-', deepLevel),
   },
   unchanged: {
-    toString: ({ key, valueAfter }, deepLevel) => {
-      const processedValue = valueToString(valueAfter, deepLevel);
-      return nodeToStr(key, processedValue, ' ', deepLevel);
-    },
+    toString: ({ key, valueAfter }, deepLevel) => nodeToStr(key, valueToString(valueAfter, deepLevel), ' ', deepLevel),
   },
 };
 
