@@ -1,59 +1,68 @@
 import _ from 'lodash';
 
 const indentation = '    ';
-const tab = tabsize => _.repeat(indentation, tabsize);
+const tab = deepLevel => _.repeat(indentation, deepLevel);
 const tabForClosingBracket = '  ';
 
-const stringify = (obj, tabsize) => {
+const stringify = (obj, deepLevel) => {
   const keys = Object.keys(obj);
   const str = keys.reduce((acc, key) => {
-    const value = _.isObject(obj[key]) ? stringify(obj[key], tabsize + 1) : obj[key];
-    return `${acc}\n${tab(tabsize)}  ${key}: ${value}`;
+    const value = _.isObject(obj[key]) ? stringify(obj[key], deepLevel + 1) : obj[key];
+    return `${acc}\n${tab(deepLevel)}  ${key}: ${value}`;
   }, '');
-  return `{${str}\n${tab(tabsize - 1)}${tabForClosingBracket}}`;
+  return `{${str}\n${tab(deepLevel - 1)}${tabForClosingBracket}}`;
 };
 
-const valueToString = (value, tabsize) => (_.isObject(value) ? stringify(value, tabsize) : value);
+const valueToString = (value, deepLevel) => (_.isObject(value)
+  ? stringify(value, deepLevel + 1) : value);
 
-const nodeToStr = symbol => (key, value, tabsize) => `\n${tab(tabsize)}${symbol} ${key}: ${value}`;
+const nodeToStr = (key, value, symbol, deepLevel) => `${tab(deepLevel)}${symbol} ${key}: ${value}`;
 
 const nodeTypesForRender = {
   nest: {
-    getValue: ({ children }, tabsize, func) => func(children, tabsize),
-    toString: nodeToStr(' '),
+    toString: ({ key, children }, deepLevel, func) => {
+      const processedValue = func(children, deepLevel);
+      return nodeToStr(key, processedValue, ' ', deepLevel);
+    },
   },
   changed: {
-    getValue: ({ valueBefore, valueAfter }, tabsize) => [valueToString(valueBefore, tabsize),
-      valueToString(valueAfter, tabsize)],
-
-    toString: (key, value, tabsize) => `\n${tab(tabsize)}- ${key}: ${value[0]}\n${tab(tabsize)}+ ${key}: ${value[1]}`,
+    toString: ({ key, valueBefore, valueAfter }, deepLevel) => {
+      const processedValueBefore = valueToString(valueBefore, deepLevel);
+      const processedValueAfter = valueToString(valueAfter, deepLevel);
+      return [nodeToStr(key, processedValueBefore, '-', deepLevel),
+        nodeToStr(key, processedValueAfter, '+', deepLevel)];
+    },
   },
   added: {
-    getValue: ({ valueAfter }, tabsize) => valueToString(valueAfter, tabsize),
-    toString: nodeToStr('+'),
+    toString: ({ key, valueAfter }, deepLevel) => {
+      const processedValue = valueToString(valueAfter, deepLevel);
+      return nodeToStr(key, processedValue, '+', deepLevel);
+    },
   },
   deleted: {
-    symbol: '-',
-    getValue: ({ valueBefore }, tabsize) => valueToString(valueBefore, tabsize),
-    toString: nodeToStr('-'),
+    toString: ({ key, valueBefore }, deepLevel) => {
+      const processedValue = valueToString(valueBefore, deepLevel);
+      return nodeToStr(key, processedValue, '-', deepLevel);
+    },
   },
   unchanged: {
-    symbol: ' ',
-    getValue: ({ valueAfter }, tabsize) => valueToString(valueAfter, tabsize),
-    toString: nodeToStr(' '),
+    toString: ({ key, valueAfter }, deepLevel) => {
+      const processedValue = valueToString(valueAfter, deepLevel);
+      return nodeToStr(key, processedValue, ' ', deepLevel);
+    },
   },
 };
 
 export default (ast) => {
-  const iter = (nodes, tabsize) => {
-    const str = nodes.reduce((acc, node) => {
-      const { key, type } = node;
+  const iter = (nodes, deepLevel) => {
+    const nodesProccesed = nodes.map((node) => {
+      const { type } = node;
       const nodeActionForRender = nodeTypesForRender[type];
-      const value = nodeActionForRender.getValue(node, tabsize + 1, iter);
-      return `${acc}${nodeActionForRender.toString(key, value, tabsize)}`;
-    }, '');
-    return tabsize === 1
-      ? `{${str}\n${tab(tabsize - 1)}}` : `{${str}\n${tab(tabsize - 1)}${tabForClosingBracket}}`;
+      return nodeActionForRender.toString(node, deepLevel + 1, iter);
+    });
+    const result = _.flattenDeep(nodesProccesed).join('\n');
+    return deepLevel === 0
+      ? `{\n${result}\n${tab(deepLevel)}}` : `{\n${result}\n${tab(deepLevel)}${tabForClosingBracket}}`;
   };
-  return iter(ast, 1);
+  return iter(ast, 0);
 };
