@@ -9,8 +9,6 @@ const nodeTypesForRender = {
   added: ({ valueAfter }, path) => `Property '${path}' was added with value: '${valueToPlainStr(valueAfter)}'`,
 
   deleted: (node, path) => `Property '${path}' was removed`,
-
-  // unchanged: () => '',
 };
 
 export default (ast) => {
