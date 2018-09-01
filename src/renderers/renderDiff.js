@@ -43,7 +43,7 @@ export default (ast) => {
       const nodeRender = nodeTypesForRender[type];
       return nodeRender(node, deepLevel + 1, iter);
     });
-    const result = _.flattenDeep(nodesProccesed).join('\n');
+    const result = _.flatten(nodesProccesed).join('\n');
     return deepLevel === 0
       ? `{\n${result}\n${tab(deepLevel)}}` : `{\n${result}\n${tab(deepLevel)}${tabForClosingBracket}}`;
   };

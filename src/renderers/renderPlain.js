@@ -19,6 +19,6 @@ export default (ast) => {
       const nodeRender = nodeTypesForRender[type];
       return nodeRender(node, newPath, iter);
     }, '');
-  const plainNodes = _.flattenDeep(iter(ast, ''));
+  const plainNodes = _.flatten(iter(ast, ''));
   return plainNodes.join('\n');
 };
