@@ -87,11 +87,11 @@ Property 'group3' was added with complex value
 [
   {
     "key": "group1",
-    "type": "branch",
+    "type": "nest",
     "children": [
       {
         "key": "baz",
-        "type": "modified",
+        "type": "changed",
         "oldValue": "bas",
         "newValue": "bars"
       },
@@ -102,7 +102,7 @@ Property 'group3' was added with complex value
       },
       {
         "key": "nest",
-        "type": "modified",
+        "type": "changed",
         "oldValue": {
           "key": "value"
         },
@@ -119,7 +119,7 @@ Property 'group3' was added with complex value
   },
   {
     "key": "group3",
-    "type": "inserted",
+    "type": "added",
     "value": {
       "fee": "100500"
     }
